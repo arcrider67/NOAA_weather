@@ -1,7 +1,12 @@
 import json
 import requests
+import matplotlib.pyplot as plt
+import numpy as np
 
-import requests
+def plotter(ax, data1, data2, param_dict):
+    out = ax.plot(data1, data2, **param_dict)
+    return out
+
 
 url = "https://api.weather.gov/points/38.6303,-90.2003"
 
@@ -22,7 +27,7 @@ headers = {
 
 
 
-url = "https://api.weather.gov/gridpoints/LSX/94,74/forecast"
+url = "https://api.weather.gov/gridpoints/LSX/94,74/forecast/hourly"
 
 headers = {
     'User-Agent': "PostmanRuntime/7.15.0",
@@ -36,8 +41,21 @@ headers = {
     }
 
 response = requests.request("GET", url, headers=headers)
-
 data = json.loads(response.text)
 
+temps = []
+times = []
+
 for item in data["properties"]["periods"]:
-    print(item["temperature"])
+     temps.append(item["temperature"])
+     loc = item["startTime"].find("T")
+     to_add = item["startTime"][:loc+3] 
+     times.append(to_add)
+
+
+
+fig, ax = plt.subplots(1, 1)
+
+plot = plotter(ax, times, temps, {"marker":"X"})
+plt.show()
+
