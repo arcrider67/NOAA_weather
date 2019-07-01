@@ -1,9 +1,10 @@
 import json
 import requests
 
-def plotter(ax, data1, data2, param_dict):
-    out = ax.plot(data1, data2, **param_dict)
-    return out
+import sys, pygame
+
+
+
 
 
 url = "https://api.weather.gov/points/38.6303,-90.2003"
